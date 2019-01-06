@@ -2,6 +2,10 @@
     color: #333;
 }
 
+.btn {
+    background-color: #dedee2;
+}
+
 .fa-star {
     margin: 0.5em;
     font-size: 24px;
