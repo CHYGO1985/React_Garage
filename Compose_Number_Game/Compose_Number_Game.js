@@ -1,4 +1,5 @@
-﻿const Stars = (props) => {  
+﻿{/* jingjie jiang Jan 6, 2019 */}
+const Stars = (props) => {  
 //   let stars = [];
 //   for (let i = 0; i < numberOfStars; i ++) {
 //     stars.push(<i key={i} className="fa fa-star"></i>)
