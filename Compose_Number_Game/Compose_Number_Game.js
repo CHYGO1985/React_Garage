@@ -1,5 +1,4 @@
-﻿{/* jingjie jiang Jan 6, 2019 */}
-const Stars = (props) => {  
+﻿const Stars = (props) => {  
 //   let stars = [];
 //   for (let i = 0; i < numberOfStars; i ++) {
 //     stars.push(<i key={i} className="fa fa-star"></i>)
@@ -26,7 +25,7 @@ const Answer = (props) => {
   return (
     <div className="col-5">
       {props.selectedNumbers.map((number, i) => 
-        <span key={i}>{number}</span>
+        <span key={i} onClick={() => props.unselectedNumber(number)} >{number}</span>
       )}
     </div>
   );
@@ -64,6 +63,11 @@ class Game extends React.Component {
         selectedNumbers: prevState.selectedNumbers.concat(clickedNumber)
     }));
   };
+  unselectedNumber = (clickedNumber) => {
+    this.setState(prevState => ({
+        selectedNumbers: prevState.selectedNumbers.filter(number => number != clickedNumber)
+    }));
+  };
   render() {
     return (
       <div className="container">
@@ -72,7 +76,8 @@ class Game extends React.Component {
         <div className="row">
           <Stars numberOfStars={this.state.randomNumberOfStars}/>
           <Button />
-          <Answer selectedNumbers={this.state.selectedNumbers} />
+          <Answer selectedNumbers={this.state.selectedNumbers}
+                        unselectedNumber={this.unselectedNumber} />
         </div>
         <br />
         <Numbers selectedNumbers={this.state.selectedNumbers}
