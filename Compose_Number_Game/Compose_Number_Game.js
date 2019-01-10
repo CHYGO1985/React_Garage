@@ -42,7 +42,7 @@ const Button = (props) => {
         {button}
       <br /><br />
       <button className="btn btn-warning btn-sm" onClick={props.redraw}>
-        <i className="fa fa-refresh">refresh</i>
+        <i className="fa fa-refresh">refresh</i> {props.redraws}
       </button>
     </div>
   );
@@ -88,6 +88,7 @@ class Game extends React.Component {
     usedNumbers: [],
     randomNumberOfStars: 1 + Math.floor(Math.random()*9),
     answerIsCorrect: null, 
+    redraws: 5,
   };
   selectNumber = (clickedNumber) => {
     if (this.state.selectedNumbers.indexOf(clickedNumber) >= 0) { return; }
@@ -117,18 +118,21 @@ class Game extends React.Component {
     }));
   };
   redraw = () => {
-    this.setState({
+    if (this.state.redraws === 0) { return; }
+    this.setState(prevState => ({
         rselectedNumbers: [],
         randomNumberOfStars: 1 + Math.floor(Math.random()*9),
         answerIsCorrect: null, 
-    });
+      redraws: prevState.redraws - 1,
+    }));
   };
   render() {
     const { 
         selectedNumbers,
       randomNumberOfStars,
       answerIsCorrect,
-      usedNumbers
+      usedNumbers,
+      redraws
     } = this.state;
     return (
       <div className="container">
@@ -138,6 +142,7 @@ class Game extends React.Component {
           <Stars numberOfStars={randomNumberOfStars}/>
           <Button selectedNumbers={selectedNumbers}
                         checkAnswer={this.checkAnswer}
+                  redraws={redraws}
                   answerIsCorrect={answerIsCorrect}
                   acceptAnswer={this.acceptAnswer}
                   redraw={this.redraw} />
