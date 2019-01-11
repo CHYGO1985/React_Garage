@@ -80,15 +80,25 @@ const Numbers = (props) => {
   );
 };
 
+const DoneFrame = (props) => {
+    return (
+    <div className="text-center">
+      <h2>{props.doneStatus}</h2>
+    </div>
+  );
+};
+
 Numbers.list = _.range(1, 10);
 
 class Game extends React.Component {
+  static randomNumber = () => 1 + Math.floor(Math.random()*9);
   state = {
     selectedNumbers: [],
     usedNumbers: [],
-    randomNumberOfStars: 1 + Math.floor(Math.random()*9),
+    randomNumberOfStars: Game.randomNumber(),
     answerIsCorrect: null, 
     redraws: 5,
+    doneStatus: 'Game Over!',
   };
   selectNumber = (clickedNumber) => {
     if (this.state.selectedNumbers.indexOf(clickedNumber) >= 0) { return; }
@@ -114,25 +124,26 @@ class Game extends React.Component {
         usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
       selectedNumbers: [],
       answerIsCorrect: null,
-      randomNumberOfStars: 1 + Math.floor(Math.random()*9),
+      randomNumberOfStars: Game.randomNumber(),
     }));
   };
   redraw = () => {
     if (this.state.redraws === 0) { return; }
     this.setState(prevState => ({
         rselectedNumbers: [],
-        randomNumberOfStars: 1 + Math.floor(Math.random()*9),
+        randomNumberOfStars: Game.randomNumber(),
         answerIsCorrect: null, 
       redraws: prevState.redraws - 1,
     }));
   };
   render() {
     const { 
-        selectedNumbers,
+      selectedNumbers,
       randomNumberOfStars,
       answerIsCorrect,
       usedNumbers,
-      redraws
+      redraws,
+      doneStatus,
     } = this.state;
     return (
       <div className="container">
@@ -153,6 +164,8 @@ class Game extends React.Component {
         <Numbers selectedNumbers={selectedNumbers}
                          selectNumber={this.selectNumber}
                  usedNumbers={usedNumbers} />
+        <br />
+        <DoneFrame doneStatus={doneStatus} />
       </div>
     );
   }
