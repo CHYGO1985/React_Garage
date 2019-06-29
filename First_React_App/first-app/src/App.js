@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+/**
+ * @jingejiejiang Jun 29, 2019
+ */
 const list = [
   {
     title: 'React',
@@ -18,37 +21,83 @@ const list = [
     points: 5,
     objectID: 1,
 }, ];
- 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-      {list.map(item => {
-        return (
-          <div> 
-            <span>
-              <a href={item.url}>{item.title}</a>
-            </span>
-            <span>{item.author}</span>
-            <span>{item.num_comments}</span>
-            <span>{item.points}</span>
-          </div> );
-          })}
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React JJ
-        </a>
-      </header>
-    </div>
-  );
+
+// function App1() {
+//   return (
+//     <div className="App">
+//       <header className="App-header">
+//       {list.map(item => {
+//         return (
+//           <div> 
+//             <span>
+//               <a href={item.url}>{item.title}</a>
+//             </span>
+//             <span>{item.author}</span>
+//             <span>{item.num_comments}</span>
+//             <span>{item.points}</span>
+//           </div> );
+//           })}
+//         <img src={logo} className="App-logo" alt="logo" />
+//         <p>
+//           Edit <code>src/App.js</code> and save to reload.
+//         </p>
+//         <a
+//           className="App-link"
+//           href="https://reactjs.org"
+//           target="_blank"
+//           rel="noopener noreferrer"
+//         >
+//           Learn React JJ
+//         </a>
+//       </header>
+//     </div>
+//   );
+// }
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      list: list,
+    };
+  }
+
+  App2(list) {
+    return (
+      <div className="App">
+        <header className="App-header">
+        {list.map(item => {
+          return (
+            <div> 
+              <span>
+                <a href={item.url}>{item.title}</a>
+              </span>
+              <span>{item.author}</span>
+              <span>{item.num_comments}</span>
+              <span>{item.points}</span>
+            </div> );
+            })}
+          <img src={logo} className="App-logo" alt="logo" />
+          <p>
+            Edit <code>src/App.js</code> and save to reload.
+          </p>
+          <a
+            className="App-link"
+            href="https://reactjs.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn React JJ
+          </a>
+        </header>
+      </div>
+    );
+  }
+
+  render() {
+    return this.App2(this.state.list); 
+  }
 }
 
 export default App;
