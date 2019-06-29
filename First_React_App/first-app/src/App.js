@@ -63,7 +63,7 @@ class App extends Component {
     };
   }
 
-  App2(list) {
+  ShowContent(list) {
     return (
       <div className="App">
         <header className="App-header">
@@ -96,7 +96,7 @@ class App extends Component {
   }
 
   render() {
-    return this.App2(this.state.list); 
+    return this.ShowContent(this.state.list); 
   }
 }
 
