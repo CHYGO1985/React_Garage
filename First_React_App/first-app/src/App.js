@@ -59,10 +59,10 @@ const isSearched = searchTerm => item => item.title.toLowerCase().includes(searc
 
 class Search extends Component {
   render () {
-    const { searchTerm, onSearchChange } = this.props;
+    const { searchTerm, onSearchChange, children } = this.props;
     return (
       <form>
-        <input 
+        {children} <input 
           type="text" 
           value={searchTerm}
           onChange={onSearchChange}
@@ -87,14 +87,35 @@ class Table extends Component {
               <span>{item.num_comments}</span>
               <span>{item.points}</span>
               <span>
-              <button
+              <Button
                 onClick={() => onDismiss(item.objectID)}
                 type="button"
-              >Dismiss</button>
+              >
+                Dismiss
+              </Button>
             </span>
           </div> );
         })}
       </div>
+    );
+  }
+}
+
+class Button extends Component {
+  render () {
+    const {
+      onClick,
+      className = '',
+      children,
+     } = this.props;
+
+    return (
+      <button
+        onClick={ onClick }
+        className={ className }
+      >
+        {children}
+      </button>
     );
   }
 }
@@ -135,7 +156,8 @@ class App extends Component {
           <Search 
             searchTerm = { searchTerm }
             onSearchChange = { this.onSearchChange }
-          />
+          > Search </Search>
+          <br />
           <Table 
             list = { list }
             onDismiss = { this.onDismiss }
