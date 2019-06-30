@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 /**
- * @jingejiejiang Jun 29, 2019
+ * @jingejiejiang Jun 30, 2019
  */
 const list = [
   {
@@ -54,6 +54,7 @@ const list = [
 //   );
 // }
 
+// is searched put it outside for reusable reason
 const isSearched = searchTerm => item => item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
 class App extends Component {
@@ -84,7 +85,8 @@ class App extends Component {
     this.setState({ list: updatedList });
   }
   
-  ShowContent(list) {
+  ShowContent() {
+    const { searchTerm, list } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -94,7 +96,7 @@ class App extends Component {
             onChange={this.onSearchChange}
            />
          </form>
-        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item => {
+        {list.filter(isSearched(searchTerm)).map(item => {
           return (
             <div> 
               <span>
@@ -129,7 +131,7 @@ class App extends Component {
   }
 
   render() {
-    return this.ShowContent(this.state.list); 
+    return this.ShowContent(); 
   }
 }
 
