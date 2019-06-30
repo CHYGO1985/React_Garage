@@ -62,13 +62,19 @@ class App extends Component {
       list,
     };
 
-    this.onDismiss = this.onDismiss.bind(this);
+    // this.onDismiss = this.onDismiss.bind(this);
   }
 
-  onDismiss(id) {
-    const updatedList = this.state.list.filter(item => item.objectID != id);
+  // implicit binding for arrow function
+  onDismiss = (id) => {
+    const updatedList = this.state.list.filter(item => item.objectID !== id);
     this.setState({ list: updatedList });
-  }
+  };
+
+  // onDismiss(id) {
+  //   const updatedList = this.state.list.filter(item => item.objectID != id);
+  //   this.setState({ list: updatedList });
+  // }
 
   ShowContent(list) {
     return (
