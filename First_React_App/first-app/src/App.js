@@ -54,33 +54,47 @@ const list = [
 //   );
 // }
 
+const isSearched = searchTerm => item => item.title.toLowerCase().includes(searchTerm.toLowerCase());
+
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       list,
+      searchTerm: '',
     };
 
-    // this.onDismiss = this.onDismiss.bind(this);
+    this.onDismiss = this.onDismiss.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
   }
 
   // implicit binding for arrow function
-  onDismiss = (id) => {
-    const updatedList = this.state.list.filter(item => item.objectID !== id);
-    this.setState({ list: updatedList });
+  // onDismiss = (id) => {
+  //   const updatedList = this.state.list.filter(item => item.objectID !== id);
+  //   this.setState({ list: updatedList });
+  // };
+
+  onSearchChange(event) {
+    this.setState({ searchTerm: event.target.value });
   };
 
-  // onDismiss(id) {
-  //   const updatedList = this.state.list.filter(item => item.objectID != id);
-  //   this.setState({ list: updatedList });
-  // }
-
+  onDismiss(id) {
+    const updatedList = this.state.list.filter(item => item.objectID !== id);
+    this.setState({ list: updatedList });
+  }
+  
   ShowContent(list) {
     return (
       <div className="App">
         <header className="App-header">
-        {list.map(item => {
+         <form>
+           <input 
+            type="text" 
+            onChange={this.onSearchChange}
+           />
+         </form>
+        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item => {
           return (
             <div> 
               <span>
