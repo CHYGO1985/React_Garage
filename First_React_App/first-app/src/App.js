@@ -57,6 +57,48 @@ const list = [
 // is searched put it outside for reusable reason
 const isSearched = searchTerm => item => item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
+class Search extends Component {
+  render () {
+    const { searchTerm, onSearchChange } = this.props;
+    return (
+      <form>
+        <input 
+          type="text" 
+          value={searchTerm}
+          onChange={onSearchChange}
+        />
+      </form>
+    );
+  }
+}
+
+class Table extends Component {
+  render () {
+    const { list, onDismiss, searchTerm } = this.props;
+    return (
+      <div>
+        {list.filter(isSearched(searchTerm)).map(item => {
+          return (
+            <div> 
+              <span>
+                <a href={item.url}>{item.title}</a>
+              </span>
+              <span>{item.author}</span>
+              <span>{item.num_comments}</span>
+              <span>{item.points}</span>
+              <span>
+              <button
+                onClick={() => onDismiss(item.objectID)}
+                type="button"
+              >Dismiss</button>
+            </span>
+          </div> );
+        })}
+      </div>
+    );
+  }
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -90,41 +132,29 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-         <form>
-           <input 
-            type="text" 
-            onChange={this.onSearchChange}
-           />
-         </form>
-        {list.filter(isSearched(searchTerm)).map(item => {
-          return (
-            <div> 
-              <span>
-                <a href={item.url}>{item.title}</a>
-              </span>
-              <span>{item.author}</span>
-              <span>{item.num_comments}</span>
-              <span>{item.points}</span>
-              <span>
-                <button
-                  onClick={() => this.onDismiss(item.objectID)}
-                  type="button"
-                >Dismiss</button>
-              </span>
-            </div> );
-            })}
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React JJ
-          </a>
+          <Search 
+            searchTerm = { searchTerm }
+            onSearchChange = { this.onSearchChange }
+          />
+          <Table 
+            list = { list }
+            onDismiss = { this.onDismiss }
+            searchTerm = { searchTerm }
+          />
+          <div>
+            <img src={logo} className="App-logo" alt="logo" />
+            <p>
+              Edit <code>src/App.js</code> and save to reload.
+            </p>
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn React JJ
+            </a>
+          </div>
         </header>
       </div>
     );
