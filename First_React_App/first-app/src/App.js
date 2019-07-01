@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 /**
  * @jingejiejiang Jun 30, 2019
  */
-const list = [{
+const list = [
+  {
     title: 'React',
     url: 'https://facebook.github.io/react/',
     author: 'Jordan Walke',
@@ -72,14 +73,14 @@ const isSearched = searchTerm => item => item.title.toLowerCase().includes(searc
 // }
 
 /* Search funtional component */
-const Search = ({ searchTerm, onSearchChange, children }) =>
-    <
-    form > { children } < input
-type = "text"
-value = { searchTerm }
-onChange = { onSearchChange }
-/> <
-/form>
+const Search = ({ searchTerm, onSearchChange, children }) => 
+  <form>
+    {children} <input 
+      type="text"
+      value={searchTerm}
+      onChange={onSearchChange}
+    />
+  </form>
 
 // class Table extends Component {
 //   render () {
@@ -111,32 +112,28 @@ onChange = { onSearchChange }
 // }
 
 /* Add Table functional component */
-const Table = ({ list, onDismiss, searchTerm }) =>
-    <
-    div > {
-        list.filter(isSearched(searchTerm)).map(item =>
-            <
-            div >
-            <
-            span >
-            <
-            a href = { item.url } > { item.title } < /a> <
-            /span> <
-            span > { item.author } < /span> <
-            span > { item.num_comments } < /span> <
-            span > { item.points } < /span> <
-            span >
-            <
-            Button onClick = {
-                () => onDismiss(item.objectID) }
-            type = "button" >
-            Dismiss <
-            /Button> <
-            /span> <
-            /div>
-        )
-    } <
-    /div>
+const Table = ({ list, onDismiss, searchTerm }) => 
+  <div className="table">
+    {list.filter(isSearched(searchTerm)).map(item => 
+      <div key={item.objectID} className="table-row">
+        <span>
+          <a href={item.url}>{item.title}</a>
+        </span>
+        <span>{item.author}</span>
+        <span>{item.num_comments}</span>
+        <span>{item.points}</span>
+        <span>
+        <Button
+          onClick={() => onDismiss(item.objectID)}
+          type="button"
+          className="button-inline"
+        >
+          Dismiss
+        </Button>
+        </span>
+      </div>
+    )}
+  </div>
 
 // class Button extends Component {
 //   render () {
@@ -159,81 +156,80 @@ const Table = ({ list, onDismiss, searchTerm }) =>
 
 /* Refactoring Button as functional component */
 const Button = ({ onClick, className, children }) =>
-    <
-    button
-onClick = { onClick }
-className = { className } >
-    { children } <
-    /button>
+  <button
+    onClick={onClick}
+    className={className}
+  >
+    {children}
+  </button>
 
 class App extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            list,
-            searchTerm: '',
-        };
-
-        this.onDismiss = this.onDismiss.bind(this);
-        this.onSearchChange = this.onSearchChange.bind(this);
-    }
-
-    // implicit binding for arrow function
-    // onDismiss = (id) => {
-    //   const updatedList = this.state.list.filter(item => item.objectID !== id);
-    //   this.setState({ list: updatedList });
-    // };
-
-    onSearchChange(event) {
-        this.setState({ searchTerm: event.target.value });
+    this.state = {
+      list,
+      searchTerm: '',
     };
 
-    onDismiss(id) {
-        const updatedList = this.state.list.filter(item => item.objectID !== id);
-        this.setState({ list: updatedList });
-    }
+    this.onDismiss = this.onDismiss.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
+  }
 
-    ShowContent() {
-        const { searchTerm, list } = this.state;
-        return ( <
-            div className = "page" >
-            <
-            header className = "App-header" >
-            <
-            Search searchTerm = { searchTerm }
-            onSearchChange = { this.onSearchChange } >
-            Search < /Search> <
-            br / >
-            <
-            Table list = { list }
+  // implicit binding for arrow function
+  // onDismiss = (id) => {
+  //   const updatedList = this.state.list.filter(item => item.objectID !== id);
+  //   this.setState({ list: updatedList });
+  // };
+
+  onSearchChange(event) {
+    this.setState({ searchTerm: event.target.value });
+  };
+
+  onDismiss(id) {
+    const updatedList = this.state.list.filter(item => item.objectID !== id);
+    this.setState({ list: updatedList });
+  }
+  
+  ShowContent() {
+    const { searchTerm, list } = this.state;
+    return (
+      <div className="page">
+        <header className="App-header">
+          <div className="interactions">
+            <Search 
+              searchTerm = { searchTerm }
+              onSearchChange = { this.onSearchChange }
+            > Search </Search>
+          </div>
+          <br />
+          <Table 
+            list = { list }
             onDismiss = { this.onDismiss }
             searchTerm = { searchTerm }
-            /> <
-            div >
-            <
-            img src = { logo }
-            className = "App-logo"
-            alt = "logo" / >
-            <
-            p >
-            Edit < code > src / App.js < /code> and save to reload. <
-            /p> <
-            a className = "App-link"
-            href = "https://reactjs.org"
-            target = "_blank"
-            rel = "noopener noreferrer" >
-            Learn React JJ <
-            /a> <
-            /div> <
-            /header> <
-            /div>
-        );
-    }
+          />
+          <div>
+            <img src={logo} className="App-logo" alt="logo" />
+            <p>
+              Edit <code>src/App.js</code> and save to reload.
+            </p>
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn React JJ
+            </a>
+          </div>
+        </header>
+      </div>
+    );
+  }
 
-    render() {
-        return this.ShowContent();
-    }
+  render() {
+    return this.ShowContent(); 
+  }
 }
 
 export default App;
