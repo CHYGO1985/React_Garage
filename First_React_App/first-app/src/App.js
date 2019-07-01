@@ -57,68 +57,110 @@ const list = [
 // is searched put it outside for reusable reason
 const isSearched = searchTerm => item => item.title.toLowerCase().includes(searchTerm.toLowerCase());
 
-class Search extends Component {
-  render () {
-    const { searchTerm, onSearchChange, children } = this.props;
-    return (
-      <form>
-        {children} <input 
-          type="text" 
-          value={searchTerm}
-          onChange={onSearchChange}
-        />
-      </form>
-    );
-  }
-}
+// class Search extends Component {
+//   render () {
+//     const { searchTerm, onSearchChange, children } = this.props;
+//     return (
+//       <form>
+//         {children} <input 
+//           type="text" 
+//           value={searchTerm}
+//           onChange={onSearchChange}
+//         />
+//       </form>
+//     );
+//   }
+// }
 
-class Table extends Component {
-  render () {
-    const { list, onDismiss, searchTerm } = this.props;
-    return (
+/* Search funtional component */
+const Search = ({ searchTerm, onSearchChange, children }) => 
+  <form>
+    {children} <input 
+      type="text"
+      value={searchTerm}
+      onChange={onSearchChange}
+    />
+  </form>
+
+// class Table extends Component {
+//   render () {
+//     const { list, onDismiss, searchTerm } = this.props;
+//     return (
+//       <div>
+//         {list.filter(isSearched(searchTerm)).map(item => {
+//           return (
+//             <div> 
+//               <span>
+//                 <a href={item.url}>{item.title}</a>
+//               </span>
+//               <span>{item.author}</span>
+//               <span>{item.num_comments}</span>
+//               <span>{item.points}</span>
+//               <span>
+//               <Button
+//                 onClick={() => onDismiss(item.objectID)}
+//                 type="button"
+//               >
+//                 Dismiss
+//               </Button>
+//             </span>
+//           </div> );
+//         })}
+//       </div>
+//     );
+//   }
+// }
+
+/* Add Table functional component */
+const Table = ({ list, onDismiss, searchTerm }) => 
+  <div>
+    {list.filter(isSearched(searchTerm)).map(item => 
       <div>
-        {list.filter(isSearched(searchTerm)).map(item => {
-          return (
-            <div> 
-              <span>
-                <a href={item.url}>{item.title}</a>
-              </span>
-              <span>{item.author}</span>
-              <span>{item.num_comments}</span>
-              <span>{item.points}</span>
-              <span>
-              <Button
-                onClick={() => onDismiss(item.objectID)}
-                type="button"
-              >
-                Dismiss
-              </Button>
-            </span>
-          </div> );
-        })}
+        <span>
+          <a href={item.url}>{item.title}</a>
+        </span>
+        <span>{item.author}</span>
+        <span>{item.num_comments}</span>
+        <span>{item.points}</span>
+        <span>
+        <Button
+          onClick={() => onDismiss(item.objectID)}
+          type="button"
+        >
+          Dismiss
+        </Button>
+        </span>
       </div>
-    );
-  }
-}
+    )}
+  </div>
 
-class Button extends Component {
-  render () {
-    const {
-      onClick,
-      className = '',
-      children,
-     } = this.props;
+// class Button extends Component {
+//   render () {
+//     const {
+//       onClick,
+//       className = '',
+//       children,
+//      } = this.props;
 
-    return (
-      <button
-        onClick={ onClick }
-        className={ className }
-      >
-        {children}
-      </button>
-    );
-  }
-}
+//     return (
+//       <button
+//         onClick={ onClick }
+//         className={ className }
+//       >
+//         {children}
+//       </button>
+//     );
+//   }
+// }
+
+/* Refactoring Button as functional component */
+const Button = ({ onClick, className, children }) =>
+  <button
+    onClick={onClick}
+    className={className}
+  >
+    {children}
+  </button>
 
 class App extends Component {
   constructor(props) {
