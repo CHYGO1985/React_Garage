@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import logo from './logo.svg';
 import './App.css';
+import logo from './logo.svg';
+import React, {Component} from 'react';
 
 /**
  * @jingejiejiang updated on Jul 2, 2019
@@ -60,10 +60,6 @@ const PARAM_SEARCH = 'query=';
 //   );
 // }
 
-// is searched put it outside for reusable reason
-
-const isSearched = searchTerm => item => item.title.toLowerCase().includes(searchTerm.toLowerCase());
-
 // class Search extends Component {
 //   render () {
 //     const { searchTerm, onSearchChange, children } = this.props;
@@ -109,19 +105,22 @@ const isSearched = searchTerm => item => item.title.toLowerCase().includes(searc
 // }
 
 /* Search funtional component */
-const Search = ({ searchTerm, onSearchChange, children }) => 
-  <form>
-    {children} <input 
+const Search = ({ searchTerm, onSearchChange, onSubmit, children }) => 
+  <form onSubmit={onSubmit}>
+    <input 
       type="text"
       value={searchTerm}
       onChange={onSearchChange}
     />
+    <button type="submit">
+      {children}
+    </button>
   </form>
 
 /* Add Table functional component */
-const Table = ({ list, onDismiss, searchTerm }) => 
+const Table = ({ list, onDismiss }) => 
   <div className="table">
-    {list.filter(isSearched(searchTerm)).map(item => 
+    {list.map(item => 
       <div key={item.objectID} className="table-row">
         <span>
           <a href={item.url}>{item.title}</a>
@@ -179,22 +178,33 @@ class App extends Component {
       searchTerm: DEFAULT_QUERY,
     };
 
-    this.setSearchTopStories = this.setSearchTopStories.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
+    this.onSearchSubmit = this.onSearchSubmit.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
+    this.setSearchTopStories = this.setSearchTopStories.bind(this);
+    this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
+  }
+
+  onSearchSubmit(event) {
+    const { searchTerm } = this.state;
+    this.fetchSearchTopStories(searchTerm);
+    event.preventDefault();
   }
 
   setSearchTopStories(result) {
     this.setState({ result });
   }
 
-  componentDidMount() {
-    const { searchTerm } = this.state;
-
+  fetchSearchTopStories(searchTerm) {
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
     .then(response => response.json())
     .then(result => this.setSearchTopStories(result))
     .catch(error => error);
+  }
+
+  componentDidMount() {
+    const { searchTerm } = this.state;
+    this.fetchSearchTopStories(searchTerm);
   }
 
   // implicit binding for arrow function
@@ -223,15 +233,18 @@ class App extends Component {
           <div className="interactions">
             <Search 
               searchTerm = { searchTerm }
+              onSubmit = { this.onSearchSubmit }
               onSearchChange = { this.onSearchChange }
             > Search </Search>
           </div>
           <br />
-          <Table 
-            list = { result.hits }
-            onDismiss = { this.onDismiss }
-            searchTerm = { searchTerm }
-          />
+          { 
+            result &&
+            <Table 
+              list = { result.hits }
+              onDismiss = { this.onDismiss }
+            /> 
+          }
           <div>
             <img src={logo} className="App-logo" alt="logo" />
             <p>
