@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 /**
- * @jingejiejiang Jun 30, 2019
+ * @jingejiejiang updated on Jul 2, 2019
  */
 const DEFAULT_QUERY = 'redux';
 
@@ -208,8 +208,10 @@ class App extends Component {
   };
 
   onDismiss(id) {
-    const updatedList = this.state.list.filter(item => item.objectID !== id);
-    this.setState({ list: updatedList });
+    const updatedList = this.state.result.hits.filter(item => item.objectID !== id);
+    this.setState({
+      result: { ...this.state.result, hits: updatedList}
+    });
   }
   
   ShowContent() {
