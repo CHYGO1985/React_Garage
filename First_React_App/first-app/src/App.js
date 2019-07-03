@@ -6,10 +6,13 @@ import React, {Component} from 'react';
  * @jingejiejiang updated on Jul 2, 2019
  */
 const DEFAULT_QUERY = 'redux';
+const DEFAULT_HPP = '100';
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
+const PARAM_PAGE = 'page=';
+const PARAM_HPP = 'hitsPerPage=';
 
 // const list = [
 //   {
@@ -192,11 +195,20 @@ class App extends Component {
   }
 
   setSearchTopStories(result) {
-    this.setState({ result });
+    // this.setState({ result });
+    // result: the new search result, different from the this.state.result which is still the pre result
+    const { hits, page } = result;
+
+    const oldHits = page !== 0? this.state.result.hits : [];
+    const updatedHits = [ ...oldHits, ...hits ];
+
+    this.setState({ 
+      result: { hits: updatedHits }
+     })
   }
 
-  fetchSearchTopStories(searchTerm) {
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+  fetchSearchTopStories(searchTerm, page = 0) {
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
     .then(response => response.json())
     .then(result => this.setSearchTopStories(result))
     .catch(error => error);
@@ -220,13 +232,17 @@ class App extends Component {
   onDismiss(id) {
     const updatedList = this.state.result.hits.filter(item => item.objectID !== id);
     this.setState({
-      result: { ...this.state.result, hits: updatedList}
+      // result: { ...this.state.result, hits: updatedList}
+      result: { hits: updatedList }
     });
+    console.log(this.state.result)
   }
   
   ShowContent() {
     const { searchTerm, result } = this.state;
+    const page = (result && result.page) || 0;
     if (!result) { return null; }
+    
     return (
       <div className="page">
         <header className="App-header">
@@ -245,6 +261,11 @@ class App extends Component {
               onDismiss = { this.onDismiss }
             /> 
           }
+          <div className="interactions">
+            <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}>
+              More
+            </Button>
+          </div>
           <div>
             <img src={logo} className="App-logo" alt="logo" />
             <p>
