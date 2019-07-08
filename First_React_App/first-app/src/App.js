@@ -177,7 +177,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      result: null,
+      results: null,
       searchKey: '',
       searchTerm: DEFAULT_QUERY,
     };
@@ -187,13 +187,21 @@ class App extends Component {
     this.onSearchChange = this.onSearchChange.bind(this);
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
     this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
+    this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
+  }
+
+  needsToSearchTopStories(searchTerm) {
+    return !this.state.results[searchTerm]
   }
 
   onSearchSubmit(event) {
     const { searchTerm } = this.state;
     this.setState({ searchKey: searchTerm });
-    // console.log(this.state);
-    this.fetchSearchTopStories(searchTerm);
+
+    if (this.needsToSearchTopStories) {
+      this.fetchSearchTopStories(searchTerm);
+    }
+    
     event.preventDefault();
   }
 
@@ -201,17 +209,21 @@ class App extends Component {
     // this.setState({ result });
     // result: the new search result, different from the this.state.result which is still the pre result
     const { hits, page } = result;
+    const { searchKey, results: results } = this.state;
 
-    const oldHits = page !== 0? this.state.result.hits : [];
+    const oldHits = results && results[searchKey]?
+        results[searchKey].hits : [];
     const updatedHits = [ ...oldHits, ...hits ];
 
     this.setState({ 
-      result: { hits: updatedHits }
-     })
+      results: { 
+        ...results,
+        [searchKey]: { hits: updatedHits, page }
+      }
+     });
   }
 
   fetchSearchTopStories(searchTerm, page = 0) {
-    console.log(searchTerm)
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
     .then(response => response.json())
     .then(result => this.setSearchTopStories(result))
@@ -222,9 +234,6 @@ class App extends Component {
     const { searchTerm } = this.state;
     // setSate will not update this immediataly, it will update in the update lifecycle
     this.setState({ searchKey: searchTerm }); 
-    // const { searchKey } = this.state;
-    console.log("didmount" + this.state);
-    // console.log(searchKey);
     this.fetchSearchTopStories(searchTerm);
   }
 
@@ -239,18 +248,39 @@ class App extends Component {
   };
 
   onDismiss(id) {
-    const updatedList = this.state.result.hits.filter(item => item.objectID !== id);
+    const { searchKey, results } = this.state;
+    const { hits, page } = results[searchKey];
+
+    console.log(hits);
+
+    const updatedList = hits.filter(item => item.objectID !== id);
     this.setState({
       // result: { ...this.state.result, hits: updatedList}
-      result: { hits: updatedList }
+      results: { 
+        ...results,
+        [searchKey]: { hits: updatedList, page }
+      }
     });
   }
   
   ShowContent() {
-    const { searchTerm, result } = this.state;
-    console.log(this.state);
-    const page = (result && result.page) || 0;
-    if (!result) { return null; }
+    const { searchTerm, results: results, searchKey } = this.state;
+    
+    const page = (
+      results &&
+      results[searchKey] &&
+      results[searchKey].page
+      ) || 0;
+    
+    const list = (
+      results &&
+      results[searchKey] &&
+      results[searchKey].hits
+    ) || [];
+
+    console.log(results);
+
+    if (!results) { return null; } 
     
     return (
       <div className="page">
@@ -264,14 +294,14 @@ class App extends Component {
           </div>
           <br />
           { 
-            result &&
+            results &&
             <Table 
-              list = { result.hits }
+              list = { list }
               onDismiss = { this.onDismiss }
             /> 
           }
           <div className="interactions">
-            <Button onClick={() => this.fetchSearchTopStories(searchTerm, page + 1)}>
+            <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
               More
             </Button>
           </div>
