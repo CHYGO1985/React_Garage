@@ -178,6 +178,7 @@ class App extends Component {
 
     this.state = {
       result: null,
+      searchKey: '',
       searchTerm: DEFAULT_QUERY,
     };
 
@@ -190,6 +191,8 @@ class App extends Component {
 
   onSearchSubmit(event) {
     const { searchTerm } = this.state;
+    this.setState({ searchKey: searchTerm });
+    // console.log(this.state);
     this.fetchSearchTopStories(searchTerm);
     event.preventDefault();
   }
@@ -208,6 +211,7 @@ class App extends Component {
   }
 
   fetchSearchTopStories(searchTerm, page = 0) {
+    console.log(searchTerm)
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
     .then(response => response.json())
     .then(result => this.setSearchTopStories(result))
@@ -216,6 +220,11 @@ class App extends Component {
 
   componentDidMount() {
     const { searchTerm } = this.state;
+    // setSate will not update this immediataly, it will update in the update lifecycle
+    this.setState({ searchKey: searchTerm }); 
+    // const { searchKey } = this.state;
+    console.log("didmount" + this.state);
+    // console.log(searchKey);
     this.fetchSearchTopStories(searchTerm);
   }
 
@@ -235,11 +244,11 @@ class App extends Component {
       // result: { ...this.state.result, hits: updatedList}
       result: { hits: updatedList }
     });
-    console.log(this.state.result)
   }
   
   ShowContent() {
     const { searchTerm, result } = this.state;
+    console.log(this.state);
     const page = (result && result.page) || 0;
     if (!result) { return null; }
     
