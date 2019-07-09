@@ -9,6 +9,7 @@ const DEFAULT_QUERY = 'redux';
 // const DEFAULT_HPP = '100';
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
+// const PATH_BASE = 'https://hn.algolia111.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
@@ -177,8 +178,9 @@ class App extends Component {
     super(props);
 
     this.state = {
-      results: null,
+      error: null,
       searchKey: '',
+      results: null,
       searchTerm: DEFAULT_QUERY,
     };
 
@@ -227,7 +229,7 @@ class App extends Component {
     fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
     .then(response => response.json())
     .then(result => this.setSearchTopStories(result))
-    .catch(error => error);
+    .catch(error => this.setState({ error }));
   }
 
   componentDidMount() {
@@ -251,8 +253,6 @@ class App extends Component {
     const { searchKey, results } = this.state;
     const { hits, page } = results[searchKey];
 
-    console.log(hits);
-
     const updatedList = hits.filter(item => item.objectID !== id);
     this.setState({
       // result: { ...this.state.result, hits: updatedList}
@@ -264,7 +264,9 @@ class App extends Component {
   }
   
   ShowContent() {
-    const { searchTerm, results, searchKey } = this.state;
+    const { searchTerm, results, searchKey, error } = this.state;
+
+    console.log(error);
     
     const page = (
       results &&
@@ -277,10 +279,6 @@ class App extends Component {
       results[searchKey] &&
       results[searchKey].hits
     ) || [];
-
-    console.log(results);
-
-    if (!results) { return null; } 
     
     return (
       <div className="page">
@@ -293,12 +291,11 @@ class App extends Component {
             > Search </Search>
           </div>
           <br />
-          { 
-            results &&
-            <Table 
-              list = { list }
-              onDismiss = { this.onDismiss }
-            /> 
+          { error
+            ? <div className="interactions">
+                <p>Something went wrong.</p>
+            </div>
+            : <Table list = { list } onDismiss = { this.onDismiss } /> 
           }
           <div className="interactions">
             <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
