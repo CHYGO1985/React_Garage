@@ -6,13 +6,13 @@ import React, {Component} from 'react';
  * @jingejiejiang updated on Jul 2, 2019
  */
 const DEFAULT_QUERY = 'redux';
-const DEFAULT_HPP = '100';
+// const DEFAULT_HPP = '100';
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
-const PARAM_HPP = 'hitsPerPage=';
+// const PARAM_HPP = 'hitsPerPage=';
 
 // const list = [
 //   {
@@ -209,7 +209,7 @@ class App extends Component {
     // this.setState({ result });
     // result: the new search result, different from the this.state.result which is still the pre result
     const { hits, page } = result;
-    const { searchKey, results: results } = this.state;
+    const { searchKey, results } = this.state;
 
     const oldHits = results && results[searchKey]?
         results[searchKey].hits : [];
@@ -264,7 +264,7 @@ class App extends Component {
   }
   
   ShowContent() {
-    const { searchTerm, results: results, searchKey } = this.state;
+    const { searchTerm, results, searchKey } = this.state;
     
     const page = (
       results &&
