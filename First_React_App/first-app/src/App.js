@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import React, {Component} from 'react';
 
 /**
- * @jingejiejiang updated on Jul 2, 2019
+ * @jingejiejiang updated on Jul 10, 2019
  */
 const DEFAULT_QUERY = 'redux';
 // const DEFAULT_HPP = '100';
