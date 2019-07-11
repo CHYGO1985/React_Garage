@@ -1,4 +1,5 @@
 import './App.css';
+import axios from 'axios';
 import logo from './logo.svg';
 import React, {Component} from 'react';
 
@@ -6,14 +7,14 @@ import React, {Component} from 'react';
  * @jingejiejiang updated on Jul 10, 2019
  */
 const DEFAULT_QUERY = 'redux';
-// const DEFAULT_HPP = '100';
+const DEFAULT_HPP = '20';
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 // const PATH_BASE = 'https://hn.algolia111.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
 const PARAM_PAGE = 'page=';
-// const PARAM_HPP = 'hitsPerPage=';
+const PARAM_HPP = 'hitsPerPage=';
 
 // const list = [
 //   {
@@ -174,6 +175,9 @@ const Button = ({ onClick, className, children }) =>
   </button>
 
 class App extends Component {
+
+  _isMounted = false;
+
   constructor(props) {
     super(props);
 
@@ -210,6 +214,7 @@ class App extends Component {
   setSearchTopStories(result) {
     // this.setState({ result });
     // result: the new search result, different from the this.state.result which is still the pre result
+
     const { hits, page } = result;
     const { searchKey, results } = this.state;
 
@@ -226,17 +231,27 @@ class App extends Component {
   }
 
   fetchSearchTopStories(searchTerm, page = 0) {
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
-    .then(response => response.json())
-    .then(result => this.setSearchTopStories(result))
-    .catch(error => this.setState({ error }));
+    // fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
+    // .then(response => response.json())
+    // .then(result => this.setSearchTopStories(result))
+    // .catch(error => this.setState({ error }));
+    
+    axios(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
+    .then(result => this._isMounted && this.setSearchTopStories(result.data))
+    .catch(error => this._isMounted && this.setState({ error }));
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     const { searchTerm } = this.state;
     // setSate will not update this immediataly, it will update in the update lifecycle
     this.setState({ searchKey: searchTerm }); 
     this.fetchSearchTopStories(searchTerm);
+  }
+
+  componentWillMount() {
+    this._isMounted = false;
   }
 
   // implicit binding for arrow function
