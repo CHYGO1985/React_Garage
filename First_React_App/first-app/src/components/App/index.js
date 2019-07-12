@@ -1,6 +1,8 @@
 import './index.css';
 import axios from 'axios';
+import Table from '../Table';
 import Search from '../Search';
+import Button from '../Button';
 import logo from '../../logo.svg';
 import React, {Component} from 'react';
 
@@ -111,42 +113,29 @@ import {
 //   }
 // }
 
-/* Search funtional component */
-// const Search = ({ searchTerm, onSearchChange, onSubmit, children }) => 
-//   <form onSubmit={onSubmit}>
-//     <input 
-//       type="text"
-//       value={searchTerm}
-//       onChange={onSearchChange}
-//     />
-//     <button type="submit">
-//       {children}
-//     </button>
-//   </form>
-
 /* Add Table functional component */
-const Table = ({ list, onDismiss }) => 
-  <div className="table">
-    {list.map(item => 
-      <div key={item.objectID} className="table-row">
-        <span>
-          <a href={item.url}>{item.title}</a>
-        </span>
-        <span> Author: {item.author}</span>
-        <span> Comments: {item.num_comments}</span>
-        <span> Points: {item.points}</span>
-        <span>
-        <Button
-          onClick={() => onDismiss(item.objectID)}
-          type="button"
-          className="button-inline"
-        >
-          Dismiss
-        </Button>
-        </span>
-      </div>
-    )}
-  </div>
+// const Table = ({ list, onDismiss }) => 
+//   <div className="table">
+//     {list.map(item => 
+//       <div key={item.objectID} className="table-row">
+//         <span>
+//           <a href={item.url}>{item.title}</a>
+//         </span>
+//         <span> Author: {item.author}</span>
+//         <span> Comments: {item.num_comments}</span>
+//         <span> Points: {item.points}</span>
+//         <span>
+//         <Button
+//           onClick={() => onDismiss(item.objectID)}
+//           type="button"
+//           className="button-inline"
+//         >
+//           Dismiss
+//         </Button>
+//         </span>
+//       </div>
+//     )}
+//   </div>
 
 // class Button extends Component {
 //   render () {
@@ -168,13 +157,13 @@ const Table = ({ list, onDismiss }) =>
 // }
 
 /* Refactoring Button as functional component */
-const Button = ({ onClick, className, children }) =>
-  <button
-    onClick={onClick}
-    className={className}
-  >
-    {children}
-  </button>
+// const Button = ({ onClick, className, children }) =>
+//   <button
+//     onClick={onClick}
+//     className={className}
+//   >
+//     {children}
+//   </button>
 
 class App extends Component {
 
@@ -282,8 +271,6 @@ class App extends Component {
   
   ShowContent() {
     const { searchTerm, results, searchKey, error } = this.state;
-
-    console.log(error);
     
     const page = (
       results &&
