@@ -13,6 +13,7 @@
 
 # snapshots
 /src/components/App/__snapshots__
+/src/components/Table/__snapshots__
 /src/components/Button/__snapshots__
 /src/components/Search/__snapshots__
 
