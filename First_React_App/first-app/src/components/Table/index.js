@@ -2,6 +2,7 @@ import './index.css';
 import React from 'react';
 import Button from '../Button';
 
+
 const Table = ({ list, onDismiss }) => 
   <div className="table">
     {list.map(item => 
