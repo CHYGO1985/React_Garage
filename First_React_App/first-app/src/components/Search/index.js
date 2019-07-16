@@ -11,5 +11,5 @@ const Search = ({ searchTerm, onSearchChange, onSubmit, children }) =>
       {children}
     </button>
   </form>
-  
+ 
 export default Search;
