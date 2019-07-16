@@ -23,6 +23,9 @@ const Table = ({ list, onDismiss }) =>
         </Button>
         </span>
       </div>
+
+
+
     )}
   </div>
 
