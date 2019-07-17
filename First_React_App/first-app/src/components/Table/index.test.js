@@ -18,13 +18,13 @@ describe('Table', () => {
 
   it('renders without crasing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<Table { ...props } />, div);
+    ReactDOM.render(<Table list = { props.list } onDismiss = {() => {}}  />, div);
     ReactDOM.unmountComponentAtNode(div);
   });
 
   test('has valid snapshot', () => {
     const component = renderer.create(
-      <Table { ...props } />
+      <Table list = { props.list }  onDismiss = {() => {}} />
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
@@ -33,7 +33,7 @@ describe('Table', () => {
   // Unit test
   it('shows two items in list', () => {
     const element = shallow(
-      <Table {...props} />
+      <Table list = { props.list } onDismiss = {() => {}} />
     );
 
     expect(element.find('.table-row').length).toBe(2);
