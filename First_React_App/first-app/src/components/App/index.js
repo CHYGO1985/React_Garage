@@ -20,7 +20,7 @@ import {
  * @jingejiejiang updated on Jul 15, 2019
  */
 
-// const list = [
+// const list =
 //   {
 //     title: 'React',
 //     url: 'https://facebook.github.io/react/',
@@ -165,6 +165,9 @@ import {
 //     {children}
 //   </button>
 
+const Loading = () =>
+  <div>Loading ...</div>
+
 class App extends Component {
 
   _isMounted = false;
@@ -176,6 +179,7 @@ class App extends Component {
       error: null,
       searchKey: '',
       results: null,
+      isLoading: false,
       searchTerm: DEFAULT_QUERY,
     };
 
@@ -217,7 +221,8 @@ class App extends Component {
       results: { 
         ...results,
         [searchKey]: { hits: updatedHits, page }
-      }
+      },
+      isLoading: false
      });
   }
 
@@ -226,6 +231,7 @@ class App extends Component {
     // .then(response => response.json())
     // .then(result => this.setSearchTopStories(result))
     // .catch(error => this.setState({ error }));
+    this.setState({ isLoading: true });
     
     axios(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
     .then(result => this._isMounted && this.setSearchTopStories(result.data))
@@ -270,7 +276,7 @@ class App extends Component {
   }
   
   ShowContent() {
-    const { searchTerm, results, searchKey, error } = this.state;
+    const { searchTerm, results, searchKey, error, isLoading } = this.state;
     
     const page = (
       results &&
@@ -288,6 +294,12 @@ class App extends Component {
       <div className="page">
         <header className="App-header">
           <div className="interactions">
+            {
+              isLoading? <Loading />
+              : <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
+                More
+              </Button>
+            }
             <Search 
               searchTerm = { searchTerm }
               onSubmit = { this.onSearchSubmit }
