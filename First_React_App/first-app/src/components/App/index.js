@@ -168,6 +168,11 @@ import {
 const Loading = () =>
   <div>Loading ...</div>
 
+const withLoading  = (Component) => ({ isLoading, ...rest }) => 
+  isLoading ? <Loading /> : <Component { ...rest } />
+
+const ButtonWithLoading = withLoading(Button);
+
 class App extends Component {
 
   _isMounted = false;
@@ -294,12 +299,17 @@ class App extends Component {
       <div className="page">
         <header className="App-header">
           <div className="interactions">
-            {
+            <ButtonWithLoading
+              isLoading={isLoading}
+              onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
+              More    
+            </ButtonWithLoading>
+            {/* {
               isLoading? <Loading />
               : <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
                 More
               </Button>
-            }
+            } */}
             <Search 
               searchTerm = { searchTerm }
               onSubmit = { this.onSearchSubmit }
