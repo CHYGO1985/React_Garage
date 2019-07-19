@@ -1,10 +1,12 @@
 import './index.css';
 import axios from 'axios';
+import logo from '../../logo.svg';
+import React, {Component} from 'react';
+
 import Table from '../Table';
 import Search from '../Search';
 import Button from '../Button';
-import logo from '../../logo.svg';
-import React, {Component} from 'react';
+import ButtonWithLoading from '../Load';
 
 import {
   DEFAULT_QUERY,
@@ -165,13 +167,13 @@ import {
 //     {children}
 //   </button>
 
-const Loading = () =>
-  <div>Loading ...</div>
+// const Loading = () =>
+//   <div>Loading ...</div>
 
-const withLoading  = (Component) => ({ isLoading, ...rest }) => 
-  isLoading ? <Loading /> : <Component { ...rest } />
+// const withLoading  = (Component) => ({ isLoading, ...rest }) => 
+//   isLoading ? <Loading /> : <Component { ...rest } />
 
-const ButtonWithLoading = withLoading(Button);
+// const ButtonWithLoading = withLoading(Button);
 
 class App extends Component {
 
