@@ -16,9 +16,15 @@ const Table = ({
   list, 
   sortKey,
   onSort,
-  onDismiss
-}) => 
-  <div className="table">
+  onDismiss,
+  isSortReverse
+}) => {
+  const sortedList = SORTS[sortKey](list);
+  const reverseSortedList = isSortReverse ? sortedList.reverse()
+    : sortedList;
+
+  return(
+    <div className="table">
     <div className="table-header">
       <span style={{ width: '40%' }}>
         <Sort
@@ -56,26 +62,29 @@ const Table = ({
         Archieve
       </span>
     </div>  
-    {SORTS[sortKey](list).map(item => 
-      <div key={item.objectID} className="table-row">
-        <span>
-          <a href={item.url}>{item.title}</a>
-        </span>
-        <span> Author: {item.author}</span>
-        <span> Comments: {item.num_comments}</span>
-        <span> Points: {item.points}</span>
-        <span>
-        <Button
-          onClick={() => onDismiss(item.objectID)}
-          type="button"
-          className="button-inline"
-        >
-          Dismiss
-        </Button>
-        </span>
-      </div>
-    )}
-  </div>
+      {sortedList.map(item => 
+        <div key={item.objectID} className="table-row">
+          <span>
+            <a href={item.url}>{item.title}</a>
+          </span>
+          <span> Author: {item.author}</span>
+          <span> Comments: {item.num_comments}</span>
+          <span> Points: {item.points}</span>
+          <span>
+            <Button
+              onClick={() => onDismiss(item.objectID)}
+              type="button"
+              className="button-inline"
+            >
+              Dismiss
+            </Button>
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+  
 
 Table.propTypes = {
   list: PropTypes.arrayOf(
@@ -87,6 +96,7 @@ Table.propTypes = {
       points: PropTypes.number,
     })
   ).isRequired,
+  isSortReverse: PropTypes.bool,
   onSort: PropTypes.func.isRequired,
   onDismiss: PropTypes.func.isRequired,
 };

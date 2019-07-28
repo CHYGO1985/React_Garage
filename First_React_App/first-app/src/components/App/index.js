@@ -189,6 +189,7 @@ class App extends Component {
       results: null,
       sortKey: 'NONE',
       isLoading: false,
+      isSortReverse: false,
       searchTerm: DEFAULT_QUERY,
     };
 
@@ -202,7 +203,9 @@ class App extends Component {
   }
 
   onSort(sortKey) {
-    this.setState({ sortKey });
+    const isSortReverse = this.state.sortKey === sortKey &&
+      !this.state.isSortReverse;
+    this.setState({ sortKey, isSortReverse });
   }
 
   needsToSearchTopStories(searchTerm) {
@@ -295,6 +298,7 @@ class App extends Component {
             searchKey,
             error,
             isLoading,
+            isSortReverse,
             sortKey } = this.state;
     
     const page = (
@@ -340,6 +344,7 @@ class App extends Component {
                 sortKey = { sortKey }
                 onSort = { this.onSort }
                 onDismiss = { this.onDismiss }
+                isSortReverse = { isSortReverse }
               /> 
           }
           <div className="interactions">
