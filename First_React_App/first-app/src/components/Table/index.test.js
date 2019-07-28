@@ -14,17 +14,28 @@ describe('Table', () => {
       { title: '1', author: '1', num_comments: 1, points: 2, objectID: 'y' },
       { title: '2', author: '2', num_comments: 1, points: 2, objectID: 'z'},
     ],
+    sortKey: 'NONE'
   }
 
   it('renders without crasing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<Table list = { props.list } onDismiss = {() => {}}  />, div);
+    ReactDOM.render(<Table
+                      list = { props.list } 
+                      sortKey = { props.sortKey }
+                      onSort = {() => {}}
+                      onDismiss = {() => {}}  
+                    />, div);
     ReactDOM.unmountComponentAtNode(div);
   });
 
   test('has valid snapshot', () => {
     const component = renderer.create(
-      <Table list = { props.list }  onDismiss = {() => {}} />
+      <Table
+        list = { props.list } 
+        sortKey = { props.sortKey }
+        onSort = {() => {}}
+        onDismiss = {() => {}}  
+      />
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
@@ -33,7 +44,12 @@ describe('Table', () => {
   // Unit test
   it('shows two items in list', () => {
     const element = shallow(
-      <Table list = { props.list } onDismiss = {() => {}} />
+      <Table
+        list = { props.list } 
+        sortKey = { props.sortKey }
+        onSort = {() => {}}
+        onDismiss = {() => {}}  
+      />
     );
 
     expect(element.find('.table-row').length).toBe(2);

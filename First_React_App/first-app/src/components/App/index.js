@@ -4,6 +4,7 @@ import logo from '../../logo.svg';
 import React, {Component} from 'react';
 
 import Table from '../Table';
+import SORTS from '../Sorts';
 import Search from '../Search';
 import Button from '../Button';
 import ButtonWithLoading from '../Load';
@@ -186,16 +187,22 @@ class App extends Component {
       error: null,
       searchKey: '',
       results: null,
+      sortKey: 'NONE',
       isLoading: false,
       searchTerm: DEFAULT_QUERY,
     };
 
+    this.onSort = this.onSort.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
     this.onSearchSubmit = this.onSearchSubmit.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
     this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
     this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
+  }
+
+  onSort(sortKey) {
+    this.setState({ sortKey });
   }
 
   needsToSearchTopStories(searchTerm) {
@@ -283,7 +290,12 @@ class App extends Component {
   }
   
   ShowContent() {
-    const { searchTerm, results, searchKey, error, isLoading } = this.state;
+    const { searchTerm,
+            results,
+            searchKey,
+            error,
+            isLoading,
+            sortKey } = this.state;
     
     const page = (
       results &&
@@ -323,7 +335,12 @@ class App extends Component {
             ? <div className="interactions">
                 <p>Something went wrong.</p>
             </div>
-            : <Table list = { list } onDismiss = { this.onDismiss } /> 
+            : <Table 
+                list = { list }
+                sortKey = { sortKey }
+                onSort = { this.onSort }
+                onDismiss = { this.onDismiss }
+              /> 
           }
           <div className="interactions">
             <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
