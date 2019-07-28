@@ -20,7 +20,7 @@ import {
 } from '../../constants'
 
 /**
- * @jingejiejiang updated on Jul 27, 2019
+ * @jingejiejiang updated on Jul 28, 2019
  */
 
 // const list =
