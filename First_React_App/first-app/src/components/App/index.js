@@ -176,6 +176,23 @@ import {
 
 // const ButtonWithLoading = withLoading(Button);
 
+const updateSearchTopStoriesSate = (hits, page) => (prevState) => {
+  console.log("prev" + JSON.stringify(prevState));
+  const { searchKey, results } = prevState;
+
+  const oldHits = results && results[searchKey]?
+      results[searchKey].hits : [];
+  const updatedHits = [ ...oldHits, ...hits ];
+
+  return {
+    results: { 
+      ...results,
+      [searchKey]: { hits: updatedHits, page }
+    },
+    isLoading: false
+  };
+}
+
 class App extends Component {
 
   _isMounted = false;
@@ -212,27 +229,32 @@ class App extends Component {
     }
     
     event.preventDefault();
-  }
+  }  
 
   setSearchTopStories(result) {
-    // this.setState({ result });
-    // result: the new search result, different from the this.state.result which is still the pre result
-
     const { hits, page } = result;
-    const { searchKey, results } = this.state;
-
-    const oldHits = results && results[searchKey]?
-        results[searchKey].hits : [];
-    const updatedHits = [ ...oldHits, ...hits ];
-
-    this.setState({ 
-      results: { 
-        ...results,
-        [searchKey]: { hits: updatedHits, page }
-      },
-      isLoading: false
-     });
+    this.setState(updateSearchTopStoriesSate(hits, page));
   }
+
+  // setSearchTopStories(result) {
+  //   // this.setState({ result });
+  //   // result: the new search result, different from the this.state.result which is still the pre result
+
+  //   const { hits, page } = result;
+  //   const { searchKey, results } = this.state;
+
+  //   const oldHits = results && results[searchKey]?
+  //       results[searchKey].hits : [];
+  //   const updatedHits = [ ...oldHits, ...hits ];
+
+  //   this.setState({ 
+  //     results: { 
+  //       ...results,
+  //       [searchKey]: { hits: updatedHits, page }
+  //     },
+  //     isLoading: false
+  //    });
+  // }
 
   fetchSearchTopStories(searchTerm, page = 0) {
     // fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}`)
