@@ -22,6 +22,17 @@ const Sort = ({ sortKey, onSort, children, activeSortKey }) => {
   );
 }
 
+const updateSortKey = (sortKey) => prevState => {
+
+  const { isSortReverse: isSortReversePre, sortKey: sortKeyPre } = prevState;
+  const isSameKey = sortKeyPre === "NONE"? false : sortKeyPre === sortKey;
+  const isSortReverse = isSameKey && !isSortReversePre;
+
+  return {
+    sortKey, isSortReverse
+  };
+};
+
 class Table extends Component {
   constructor(props) {
     super(props);
@@ -35,9 +46,7 @@ class Table extends Component {
   }
 
   onSort(sortKey) {
-    const isSortReverse = this.state.sortKey === sortKey &&
-      !this.state.isSortReverse;
-    this.setState({ sortKey, isSortReverse });
+    this.setState(updateSortKey(sortKey));
   }
 
   render() {

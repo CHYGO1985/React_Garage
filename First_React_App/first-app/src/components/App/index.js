@@ -177,7 +177,6 @@ import {
 // const ButtonWithLoading = withLoading(Button);
 
 const updateSearchTopStoriesSate = (hits, page) => (prevState) => {
-  console.log("prev" + JSON.stringify(prevState));
   const { searchKey, results } = prevState;
 
   const oldHits = results && results[searchKey]?
@@ -192,6 +191,26 @@ const updateSearchTopStoriesSate = (hits, page) => (prevState) => {
     isLoading: false
   };
 }
+
+const updateSearchTearm = (newTerm) => prevState => {
+  return {
+    searchTerm: newTerm
+  };
+};
+
+const updateList = id => prevState => {
+
+  const { searchKey, results } = prevState;
+  const { hits, page } = results[searchKey];
+
+  const updatedList = hits.filter(item => item.objectID !== id);
+  return {
+    results: {
+      ...results,
+      [searchKey]: { hits: updatedList, page }
+    }
+  };
+};
 
 class App extends Component {
 
@@ -222,7 +241,16 @@ class App extends Component {
 
   onSearchSubmit(event) {
     const { searchTerm } = this.state;
-    this.setState({ searchKey: searchTerm });
+    // this.setState(prevState => (
+    //   { searchKey: searchTerm }
+    // ));
+
+    this.setState(prevState => {
+      const { searchTerm } = prevState;
+      return {
+        searchKey: searchTerm
+      };
+    });
 
     if (this.needsToSearchTopStories) {
       this.fetchSearchTopStories(searchTerm);
@@ -261,11 +289,11 @@ class App extends Component {
     // .then(response => response.json())
     // .then(result => this.setSearchTopStories(result))
     // .catch(error => this.setState({ error }));
-    this.setState({ isLoading: true });
+    this.setState(prevState => ({ isLoading: true }));
     
     axios(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
     .then(result => this._isMounted && this.setSearchTopStories(result.data))
-    .catch(error => this._isMounted && this.setState({ error }));
+    .catch(error => this._isMounted && this.setState(prevState => ({ error })));
   }
 
   componentDidMount() {
@@ -273,7 +301,12 @@ class App extends Component {
 
     const { searchTerm } = this.state;
     // setSate will not update this immediataly, it will update in the update lifecycle
-    this.setState({ searchKey: searchTerm }); 
+    this.setState(prevState => {
+      const { searchTerm } = prevState;
+      return {
+        searchKey: searchTerm
+      };
+    });
     this.fetchSearchTopStories(searchTerm);
   }
 
@@ -288,21 +321,13 @@ class App extends Component {
   // };
 
   onSearchChange(event) {
-    this.setState({ searchTerm: event.target.value });
+    // this.setState({searchTerm: event.target.value});
+    this.setState(updateSearchTearm(event.target.value));
+    // this.setState((curSearchTearm) => ({ searchTerm: curSearchTearm }));
   };
 
   onDismiss(id) {
-    const { searchKey, results } = this.state;
-    const { hits, page } = results[searchKey];
-
-    const updatedList = hits.filter(item => item.objectID !== id);
-    this.setState({
-      // result: { ...this.state.result, hits: updatedList}
-      results: { 
-        ...results,
-        [searchKey]: { hits: updatedList, page }
-      }
-    });
+    this.setState(updateList(id));
   }
   
   ShowContent() {
