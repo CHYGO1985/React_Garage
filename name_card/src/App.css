@@ -1,0 +1,61 @@
+.namecard {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+  height: 100%;
+  background-color: #343434;
+  color: white;
+  /* this is to prevent ele exit the range of parent div */
+  overflow: auto;
+}
+
+.namecard .profile-image {
+  background-image: url('../public/images/logo192.png')!important;
+
+  height: 30vh;
+  width: 40%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.basic-infor .job-title {
+  margin-top: -10px;
+}
+
+.basic-infor .contact-info > li {
+  display: inline-block;
+  margin-right: 80px;
+  margin-left: 50px;
+}
+
+.namecard .about-info {
+  text-align: left;
+  margin-left: 30px;
+}
+
+.namecard .about-info > p {
+  margin-top: -10px;
+}
+
+.interests-info {
+  text-align: left;
+  margin-left: 30px;
+}
+
+.interests-info > p {
+  margin-top: -10px;
+}
+
+.namecard-footer .contact-list > li {
+  display: inline-block;
+  margin-right: 50px;
+  margin-left: 30px;
+}
+
+.namecard-footer .contact-list > li > a img {
+  height: 50px;
+  width: 50px;
+  margin-left: -50px;
+}
