@@ -5,7 +5,7 @@ import '../stylesheets/components/Hero.css'
 function Hero() {
   return (
     <section className='hero'>
-      <img src='photo-grid.png' alt='airbnb heros photo' className='hero-image' />
+      <img src='/images/photo-grid.png' alt='airbnb heros photo' className='hero-image' />
       <h1 className='hero-title'>
         Online Experience
       </h1>

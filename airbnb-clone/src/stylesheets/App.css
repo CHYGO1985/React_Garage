@@ -10,3 +10,13 @@ body {
  font-family: 'Popins', sans-serif;
 }
 
+section {
+  padding: 20px;
+}
+
+.cards-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  overflow-x: auto;
+}
