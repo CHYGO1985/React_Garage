@@ -37,7 +37,6 @@ class Form extends React.Component {
     state = { userName: '' }
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log('Event: Form Submit', this.state.userName);
         axios.get(`https://api.github.com/users/${this.state.userName}`)
             .then(resp => {
                 this.props.onSubmit(resp.data);
@@ -74,7 +73,6 @@ class App extends React.Component {
     };
 
     addNewCard = (cardInfo) => {
-        console.log(cardInfo);
         this.setState(prevState => ({
             cards: prevState.cards.concat(cardInfo)
         }));
