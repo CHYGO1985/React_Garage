@@ -1,10 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
+
+import TravelNote from './components/travel-note';
 
 function App() {
   return (
     <div className="App">
-      <h1>Test</h1>
+      <TravelNote />
     </div>
   );
 }

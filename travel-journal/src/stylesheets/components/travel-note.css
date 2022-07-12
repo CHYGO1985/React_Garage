@@ -1,0 +1,55 @@
+.travel-note {
+  max-width: 1000px;
+  max-height: 400px;
+  padding-left: 30px;
+  padding-top: 30px;
+}
+
+.location-photo {
+  max-width: 300px;
+  max-height: 300px;
+  float: left;
+  border-radius: 8px;
+}
+
+.location-info {
+  display: flex;
+  align-items: baseline;
+  padding-top: -20px;
+  padding-left: 20px;
+}
+
+.location-icon {
+  max-width: 25px;
+  max-height: 25px;
+  padding-right: 20px;
+}
+
+.location-name {
+  font-size: 25px;
+  padding-right: 20px;
+}
+
+.location-map-link {
+  color: grey;
+}
+
+.travel-description {
+  text-align: left;
+  margin-left: 20px;
+  padding-left: 100px;
+}
+
+.travel-description .title {
+  font-size: 40px;
+  margin-top: -10px;
+}
+
+.travel-date {
+  margin-top: -5px;
+  padding-left: 120px;
+}
+
+.travel-description details {
+  padding-left: 120px;
+}
