@@ -1,9 +1,16 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import '../stylesheets/components/Meme.css'
+import memesData from '../data/memesData';
 
 function Meme() {
-  function getNewImgClickHandler() {
-    console.log("hello world")
+
+  const [memeImage, setMemeIamge] = React.useState()
+
+  function getNewMemeImg() {
+    const memesArray = memesData.data.memes;
+    const randomNum = Math.floor(Math.random() * memesArray.length)
+    setMemeIamge(memesArray[randomNum].url)
   }
 
   return (
@@ -19,8 +26,9 @@ function Meme() {
           placeholder='Bottom'
           className='meme-main-input'
         ></input>
-        <button className='meme-main-button' onClick={getNewImgClickHandler}>Get a new image</button>
+        <button className='meme-main-button' onClick={getNewMemeImg}>Get a new meme image</button>
       </div>
+      <img src={memeImage} className='meme--image'/>
     </main>
   )
 }
