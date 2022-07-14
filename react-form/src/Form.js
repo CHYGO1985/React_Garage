@@ -24,6 +24,7 @@ export default function Form() {
     }
     
     function handleSubmit(event) {
+        // prevent react refresh the page and reload react component
         event.preventDefault()
         // submitToApi(formData)
         console.log(formData)
