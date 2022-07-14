@@ -125,6 +125,7 @@ export default function Form() {
             </select>
             <br />
             <br />
+            {/* <!-- by default, button in form is treated as type='submit' --> */}
             <button>Submit</button>
         </form>
     )
