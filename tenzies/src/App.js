@@ -4,7 +4,7 @@ import Die from '../../tenzies/src/components/Die';
 import Constants from './utils/Constants';
 
 function App() {
-  const [dice, setDice] = React.useState(getDieArray())
+  const [dice, setDice] = React.useState(getDieArray)
   
   function getDieArray() {
     const dieArray = [];
@@ -21,11 +21,16 @@ function App() {
     )
   )
 
+  function rollDice() {
+    setDice(getDieArray())
+  }
+
   return (
     <div className='main'>
       <div className="dice-panel">
         {dieComponents}
       </div>
+      <button className='roll-dice-btn' onClick={rollDice}>Roll</button>
     </div>
   );
 }
