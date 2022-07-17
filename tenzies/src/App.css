@@ -10,6 +10,13 @@
   align-items: center;
 }
 
+.instructions {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  margin-top: 0;
+  text-align: center;
+}
+
 .dice-panel {
   display: grid;
   grid-template: auto auto / repeat(5, 1fr);
@@ -26,4 +33,12 @@
   font-size: 1.2rem;
   font-family: 'Karla', sans-serif;
   cursor: pointer;
+}
+
+.roll-dice-btn:focus {
+  outline: none;
+}
+
+.roll-dice-btn:active {
+  box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
 }
